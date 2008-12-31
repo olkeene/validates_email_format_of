@@ -33,19 +33,19 @@ module ActiveRecord
         options.update(attr_names.pop) if attr_names.last.is_a?(Hash)
 
         validates_each(attr_names, options) do |record, attr_name, value|
-          v = value.to_s
-          record_out = "\" #{v} \""
+          value.to_s.strip!
+          record_out = "\" #{value} \""
 
           # local part max is 64 chars, domain part max is 255 chars
           # TODO: should this decode escaped entities before counting?
           begin
-            domain, local = v.reverse.split('@', 2)
+            domain, local = value.reverse.split('@', 2)
           rescue
             record.errors.add(attr_name, record_out + options[:message])
             next
           end
 
-          unless v =~ options[:with] and not v =~ /\.\./ and domain.length <= 255 and local.length <= 64
+          unless value =~ options[:with] and not value =~ /\.\./ and domain.length <= 255 and local.length <= 64
             record.errors.add(attr_name, record_out + options[:message])
           end
         end
