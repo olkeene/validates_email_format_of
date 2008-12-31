@@ -33,12 +33,13 @@ The unit tests for this plugin use an in-memory sqlite3 database.
 
 == Resources
 
-=== Subversion
+=== Git
 
-* http://code.dunae.ca/validates_email_format_of
+* http://github.com/olkeene/validates_email_format_of/tree/master
 
 == Credits
 
 Written by Alex Dunae (dunae.ca), 2006-07.
 
 Thanks to Francis Hwang (http://fhwang.net/) at Diversion Media for creating the 1.1 update.
+Contributed by Zhurbiy Oleg( Ol.keene )
