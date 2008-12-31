@@ -25,27 +25,28 @@ module ActiveRecord
       # * <tt>unless</tt> - See <tt>:if</tt>
       def validates_email_format_of(*attr_names)
         options = { :message => ' does not appear to be a valid e-mail address', 
-                          :on => :save, 
-                          :allow_nil => false,
-                          :allow_blank => false,
-                          :with => ValidatesEmailFormatOf::Regex }
+                    :on => :save,
+                    :allow_nil => false,
+                    :allow_blank => false,
+                    :with => ValidatesEmailFormatOf::Regex }
 
         options.update(attr_names.pop) if attr_names.last.is_a?(Hash)
 
         validates_each(attr_names, options) do |record, attr_name, value|
           v = value.to_s
+          record_out = "\" #{v} \""
 
           # local part max is 64 chars, domain part max is 255 chars
           # TODO: should this decode escaped entities before counting?
           begin
             domain, local = v.reverse.split('@', 2)
           rescue
-            record.errors.add(attr_name, options[:message])
+            record.errors.add(attr_name, record_out + options[:message])
             next
           end
 
           unless v =~ options[:with] and not v =~ /\.\./ and domain.length <= 255 and local.length <= 64
-            record.errors.add(attr_name, options[:message])
+            record.errors.add(attr_name, record_out + options[:message])
           end
         end
       end
